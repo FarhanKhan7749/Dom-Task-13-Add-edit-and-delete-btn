@@ -2,7 +2,8 @@ var form = document.querySelector("#my-form");
 var nameInput = document.querySelector('#name');
 var emailInput = document.querySelector('#email');
 //console.log(form);
-let userList = JSON.parse(localStorage.getItem('user')) || [];
+//let userList = JSON.parse(localStorage.getItem('user'+user.email));
+//console.log(userList);
 form.addEventListener('submit', (e) =>{;
     e.preventDefault();
     // user object 
@@ -11,11 +12,11 @@ form.addEventListener('submit', (e) =>{;
         email : emailInput.value,
     } 
     //console.log(user);
-    userList.push(user);// array to store all the data of the users
+    //userList.push(user);// array to store all the data of the users
     document.querySelector("#my-form").reset();// to reset the form
     //console.log(userList);
-    userSeralized = JSON.stringify(userList);// local storage only allow string so convert into string.
-    localStorage.setItem("user",userSeralized);// adding element in local storage
+    userSeralized = JSON.stringify(user);// local storage only allow string so convert into string.
+    localStorage.setItem( user.email ,userSeralized);// adding element in local storage
 
     addListOfUsers(user);// calling the funtion
 });
@@ -52,7 +53,7 @@ function addListOfUsers(user) {
     deleteB.type = 'button'
     deleteB.value = 'Delete'
     deleteB.addEventListener('click',(e) =>{
-        localStorage.removeItem('user');
+        localStorage.removeItem(user.email);
         li.remove();
     })
     deleteB.style.border = "2px solid red";
@@ -61,8 +62,9 @@ function addListOfUsers(user) {
     li.appendChild(deleteB);
     ul.append(li)
 }
-userList.forEach(addListOfUsers);
-
-
-
-
+//userList.forEach(addListOfUsers);
+Object.keys(localStorage).forEach((key) => {
+    stringifiedDetailsOfPeople = localStorage.getItem(key);
+    detailsOfPeople = JSON.parse(stringifiedDetailsOfPeople);    
+    addListOfUsers(detailsOfPeople);
+});
