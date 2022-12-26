@@ -1,13 +1,21 @@
 var form = document.querySelector("#my-form");
 var nameInput = document.querySelector('#name');
 var emailInput = document.querySelector('#email');
+<<<<<<< HEAD
 form.addEventListener('submit', (e) =>{
+=======
+//console.log(form);
+//let userList = JSON.parse(localStorage.getItem('user'+user.email));
+//console.log(userList);
+form.addEventListener('submit', (e) =>{;
+>>>>>>> ccbb14aa718c2baf70f69d628bbd0ecc4a917ec2
     e.preventDefault();
     // user object 
     let user ={
         name : nameInput.value,
         email : emailInput.value,
     } 
+<<<<<<< HEAD
     document.querySelector("#my-form").reset();// to reset the form
     // create user in backed useing network call
     axios.post('https://crudcrud.com/api/373328cd2d974b7d9c8c0727f5be42c5/appointmentData', user)
@@ -17,6 +25,16 @@ form.addEventListener('submit', (e) =>{
         console.log(err);
     });
     addListOfUsers(user);// calling the funtion to display the created user
+=======
+    //console.log(user);
+    //userList.push(user);// array to store all the data of the users
+    document.querySelector("#my-form").reset();// to reset the form
+    //console.log(userList);
+    userSeralized = JSON.stringify(user);// local storage only allow string so convert into string.
+    localStorage.setItem( user.email ,userSeralized);// adding element in local storage
+
+    addListOfUsers(user);// calling the funtion
+>>>>>>> ccbb14aa718c2baf70f69d628bbd0ecc4a917ec2
 });
 // Create list in html document
 function addListOfUsers(user) {
@@ -52,6 +70,7 @@ function addListOfUsers(user) {
     li.appendChild(deleteB);
     ul.append(li)
 }
+<<<<<<< HEAD
 
 //get request using crud crud
 // function showUser1(){
@@ -91,3 +110,11 @@ function showUser(){
 }
 
 showUser();
+=======
+//userList.forEach(addListOfUsers);
+Object.keys(localStorage).forEach((key) => {
+    stringifiedDetailsOfPeople = localStorage.getItem(key);
+    detailsOfPeople = JSON.parse(stringifiedDetailsOfPeople);    
+    addListOfUsers(detailsOfPeople);
+});
+>>>>>>> ccbb14aa718c2baf70f69d628bbd0ecc4a917ec2
