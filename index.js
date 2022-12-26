@@ -1,33 +1,24 @@
 var form = document.querySelector("#my-form");
 var nameInput = document.querySelector('#name');
 var emailInput = document.querySelector('#email');
-//console.log(form);
-let userList = JSON.parse(localStorage.getItem('user')) || [];
-form.addEventListener('submit', (e) =>{;
+form.addEventListener('submit', (e) =>{
     e.preventDefault();
     // user object 
     let user ={
         name : nameInput.value,
         email : emailInput.value,
     } 
-    //console.log(user);
-    userList.push(user);// array to store all the data of the users
     document.querySelector("#my-form").reset();// to reset the form
-    //console.log(userList);
-    userSeralized = JSON.stringify(userList);// local storage only allow string so convert into string.
-    localStorage.setItem("user",userSeralized);// adding element in local storage
-
-    addListOfUsers(user);// calling the funtion
+    // create user in backed useing network call
+    axios.post('https://crudcrud.com/api/373328cd2d974b7d9c8c0727f5be42c5/appointmentData', user)
+    .then((result) => {
+        console.log(result);     
+    }).catch((err) => {
+        console.log(err);
+    });
+    addListOfUsers(user);// calling the funtion to display the created user
 });
-
-//userList_Diseralized = JSON.parse(localStorage.getItem('user'));
-
-//console.log(userList_Diseralized)
-/*
-Array.from(userList_Diseralized).forEach(function(item){
-    //console.log(item);
-})
-*/
+// Create list in html document
 function addListOfUsers(user) {
     // get element where you wnat to create a elemnt 
     var ul = document.getElementById("listOfUser");
@@ -52,7 +43,7 @@ function addListOfUsers(user) {
     deleteB.type = 'button'
     deleteB.value = 'Delete'
     deleteB.addEventListener('click',(e) =>{
-        localStorage.removeItem('user');
+        localStorage.removeItem(user.email);
         li.remove();
     })
     deleteB.style.border = "2px solid red";
@@ -61,8 +52,42 @@ function addListOfUsers(user) {
     li.appendChild(deleteB);
     ul.append(li)
 }
-userList.forEach(addListOfUsers);
 
+//get request using crud crud
+// function showUser1(){
+//     axios.get('https://crudcrud.com/api/373328cd2d974b7d9c8c0727f5be42c5/appointmentData')
+//     .then((res)=>{
+//         addListOfUsers(res);
+//     })
+//     .catch((err)=>{
+//         console.log(err);
+//     });
+// }
 
+//showUser1();
+//
+//
+//
+//get request using crud crud
+function showUser(){
+    axios.get('https://crudcrud.com/api/373328cd2d974b7d9c8c0727f5be42c5/appointmentData')
+    .then((res)=>{
+        let userArray = res.data;
+        userArray.forEach((ele) => {
+            //console.log(ele.name);
+            //console.log(ele.email);
+            let userInfo = {
+                name: ele.name,
+                email: ele.email
+            }
+            addListOfUsers(userInfo);
+        });
+        console.log(res)
+        //console.log(res.data);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+}
 
-
+showUser();
